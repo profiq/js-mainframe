@@ -8,7 +8,7 @@ import { Environment, DaemonConfig, VaultConfig } from '@mainframe/config'
 import { startDaemon } from '@mainframe/toolbox'
 // eslint-disable-next-line import/named
 import { idType, type ID } from '@mainframe/utils-id'
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, session, BrowserWindow, ipcMain } from 'electron'
 
 import {
   launcherToDaemonRequestChannel,
@@ -134,6 +134,13 @@ const createLauncherWindow = async () => {
     type: 'launcher',
     width: 480,
   })
+
+  session
+    .fromPartition('app-partition')
+    .setPermissionRequestHandler((webContents, permission, callback) => {
+      console.log('denied', permission)
+      callback(false)
+    })
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
