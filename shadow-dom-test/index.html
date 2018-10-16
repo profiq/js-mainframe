@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>Mainframe Contact Component PoC</title>
+</head>
+<body>
+    <script>
+        Element.prototype._attachShadow = Element.prototype.attachShadow;
+        Element.prototype.attachShadow = function() {
+            return this._attachShadow( { mode: "open" } );
+        }
+    </script>
+    <script src="./mf-contact.js"></script>
+
+    <!-- Carl -->
+    <mf-contact id="test" ident="63013e4f21adba8"></mf-contact>
+    <hr />
+
+    <!-- Paul -->
+    <mf-contact ident="ba343f1bd8aa5a0"></mf-contact>
+    <hr />
+
+    <!-- Adam -->
+    <!-- <mf-contact ident="35a0299d821f4fb"></mf-contact> -->
+    <!-- <hr /> -->
+
+    <!-- Duane -->
+    <!-- <mf-contact ident="f1eb9ae84241e05"></mf-contact> -->
+    <!-- <hr /> -->
+
+    <!-- Incorrect Ident -->
+    <mf-contact ident="250f0471e93a5eb3"></mf-contact>
+    <hr />
+
+    <!-- Insert Ident -->
+    <mf-contact></mf-contact>
+    <hr />
+
+    <script>
+        const testEl = document.getElementById('test'); 
+
+        console.log('shadowRoot', testEl.shadowRoot.firstChild)
+        // console.log('shadowElements', testEl.shadowElements)
+        
+        
+    </script>
+</body>
+</html>
