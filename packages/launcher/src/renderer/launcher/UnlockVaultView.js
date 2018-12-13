@@ -47,8 +47,8 @@ export default class UnlockVaultView extends Component<Props, State> {
       console.warn(err)
       this.setState({
         awaitingResponse: false,
-        error:
-          'Failed to unlock vault, please check you entered the correct password.',
+        error: err.message === 'Invalid password'?
+          'Failed to unlock vault, please check you entered the correct password.':err.message,
       })
     }
   }
