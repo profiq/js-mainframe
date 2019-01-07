@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { ActivityIndicator } from 'react-native'
 
-import { Button, TextField, Row, Column, Text } from '@morpheus-ui/core'
+import { Button, TextField, Row, Column } from '@morpheus-ui/core'
 import CircleArrowRight from '@morpheus-ui/icons/CircleArrowRight'
 import { Form, type FormSubmitPayload } from '@morpheus-ui/forms'
 
@@ -23,6 +23,7 @@ type Props = {
 type State = {
   error?: ?string,
   awaitingResponse?: boolean,
+  lastTry?: ?string,
 }
 
 const FormContainer = styled.View`
@@ -53,18 +54,18 @@ export default class UnlockVaultView extends Component<Props, State> {
         awaitingResponse: false,
         error:
           'Failed to unlock vault, please check you entered the correct password.',
+        lastTry: password,
       })
     }
   }
 
+  passwordValidation = ({ value }: FieldValidateFunctionParams) => {
+    if (value && value === this.state.lastTry) {
+      return this.state.error
+    }
+  }
+
   render() {
-    const errorMsg = this.state.error ? (
-      <Row size={1}>
-        <Column>
-          <Text variant="error">{this.state.error}</Text>
-        </Column>
-      </Row>
-    ) : null
     const action = this.state.awaitingResponse ? (
       <ActivityIndicator />
     ) : (
@@ -90,11 +91,11 @@ export default class UnlockVaultView extends Component<Props, State> {
                   name="password"
                   type="password"
                   testID="vault-manager-unlock-input"
+                  validation={this.passwordValidation}
                   required
                 />
               </Column>
             </Row>
-            {errorMsg}
             <Row size={2} top>
               <Column styles="align-items:flex-end;" smOffset={1}>
                 {action}
